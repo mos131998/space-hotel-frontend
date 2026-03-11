@@ -43,28 +43,6 @@ export default function RegisterPage() {
         {/*register Form */}
 
         <RegisterForm />
-        {/*สู่ความเวิ้งว้างอันไกลโพ้น */}
-
-        <Button
-          className="relative
-w-full
-py-6
-rounded-2xl
-text-white
-font-semibold
-bg-gradient
-from-[#3A001F]
-via-[#5B0026]
-to-[#8E1A45]
-shadow-[0_20px_60px_rgba(255,0,120,0.5)]
-flex
-items-center
-justify-center
-gap-3
-"
-        >
-          <Link href="/login">สู่ความเวิ้งว้างอันไกลโพ้น</Link>
-        </Button>
       </div>
     </div>
   );
