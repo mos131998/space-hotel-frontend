@@ -6,7 +6,7 @@ import { Input } from "@/components/ui/input";
 export default function RegisterForm() {
   return (
     <form>
-      <FieldGroup>
+      <FieldGroup className="gap-4">
         <div>
           {/*first name */}
           <Field>
