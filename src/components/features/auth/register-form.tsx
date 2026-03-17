@@ -8,15 +8,15 @@ import {
   FieldLabel,
 } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
+import { register } from "@/lib/actions/auth.action";
 import { RegisterInput, registerSchema } from "@/lib/schemas/auth.schema";
-import { simLoading } from "@/lib/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Loader } from "lucide-react";
 import { useTransition } from "react";
 import { Controller, useForm } from "react-hook-form";
 
 export default function RegisterForm() {
-  const { handleSubmit, control } = useForm<RegisterInput>({
+  const { handleSubmit, control, setError } = useForm<RegisterInput>({
     defaultValues: {
       firstName: "",
       lastName: "",
@@ -30,7 +30,10 @@ export default function RegisterForm() {
 
   const onSubmit = (data: RegisterInput) => {
     startTransition(async () => {
-      await simLoading();
+      const res = await register(data);
+      if (!res.success && res.code === "EMAIL_ALREADY_EXIST") {
+        setError("email", { message: res.message });
+      }
     });
   };
 
@@ -97,7 +100,6 @@ export default function RegisterForm() {
                   id={field.name}
                   placeholder="email"
                   aria-invalid={fieldState.invalid}
-                  type="password"
                 />
                 {fieldState.invalid && (
                   <FieldError errors={[fieldState.error]} />
@@ -120,6 +122,7 @@ export default function RegisterForm() {
                   id={field.name}
                   placeholder="password"
                   aria-invalid={fieldState.invalid}
+                  type="password"
                 />
                 {fieldState.invalid && (
                   <FieldError errors={[fieldState.error]} />

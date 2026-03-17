@@ -1,4 +1,5 @@
 "use client";
+import { Alert, AlertTitle } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
 import {
   Field,
@@ -7,15 +8,20 @@ import {
   FieldLabel,
 } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
+import { login } from "@/lib/actions/auth.action";
 import { LoginInput, loginSchema } from "@/lib/schemas/auth.schema";
-import { simLoading } from "@/lib/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Loader } from "lucide-react";
+import { AlertCircleIcon, Loader } from "lucide-react";
 import { useTransition } from "react";
 import { Controller, useForm } from "react-hook-form";
 
 export default function LoginForm() {
-  const { handleSubmit, control } = useForm<LoginInput>({
+  const {
+    handleSubmit,
+    control,
+    setError,
+    formState: { errors },
+  } = useForm<LoginInput>({
     defaultValues: {
       email: "",
       password: "",
@@ -27,12 +33,21 @@ export default function LoginForm() {
 
   const onSubmit = (data: LoginInput) => {
     startTransition(async () => {
-      await simLoading();
+      const res = await login(data);
+      if (!res.success) {
+        setError("root", { message: "email or password your is incorrect" });
+      }
     });
   };
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
+      {errors.root && (
+        <Alert variant="destructive" className="md-4 bg-purple-200">
+          <AlertCircleIcon />
+          <AlertTitle>{errors.root.message}</AlertTitle>
+        </Alert>
+      )}
       <FieldGroup className="gap-4">
         {/*email */}
         <Controller
