@@ -1,5 +1,3 @@
-import Headers from "@/components/layouts/headers";
-
 export default function MainLayout({
   children,
 }: {
@@ -7,7 +5,6 @@ export default function MainLayout({
 }) {
   return (
     <div className="min-h-screen">
-      <Headers />
       <div>{children}</div>
     </div>
   );

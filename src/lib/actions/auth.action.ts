@@ -5,7 +5,7 @@ import { authService } from "../api/auth/auth.service";
 import { LoginInput, RegisterInput } from "../schemas/auth.schema";
 import { ActionResult } from "./action.type";
 import { formatActionError } from "./action.util";
-import { signIn } from "../auth/auth";
+import { signIn, signOut } from "../auth/auth";
 
 export const register = async (input: RegisterInput): Promise<ActionResult> => {
   try {
@@ -28,4 +28,8 @@ export const login = async (input: LoginInput) => {
     return { success: false, code: "INVALID_CREDENTIALS" };
   }
   redirect("/");
+};
+
+export const logout = async () => {
+  await signOut({ redirectTo: "/login" });
 };

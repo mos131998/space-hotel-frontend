@@ -5,13 +5,13 @@ import NavigationItem from "./navigation-item";
 
 const NAVIGATION_ITEM = [
   { href: "/", title: "หน้าหลัก" },
-  { href: "/room", title: "ห้องพัก" },
+  { href: "/roomhotel", title: "ห้องพัก" },
   { href: "/Booking", title: "จองห้องพัก" },
 ];
 
 export default function MainNavigation() {
   const pathName = usePathname();
-  console.log(pathName);
+
   return (
     <div className="text-white flex gap-3">
       {NAVIGATION_ITEM.map((item) => (
