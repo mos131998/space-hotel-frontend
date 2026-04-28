@@ -12,7 +12,7 @@ export const metadata: Metadata = {
 export default function RegisterPage() {
   return (
     <div className="min-h-screen flex justify-center items-center">
-      <div className="grid gap-5 max-w-xl mx-auto p-4 border-1 border-pink-500 rounded-sm py-4">
+      <div className="grid gap-5 max-w-xl mx-auto p-4 border border-pink-500 rounded-sm py-4">
         {/* Back button */}
         <div className="mx-4">
           <Button variant="ghost" className="rounded-full size-8" asChild>

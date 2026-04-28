@@ -28,10 +28,11 @@ const apiFetch = async <G>(
   if (!res.ok) {
     const error = await res.json();
     console.log("error fetch", error);
-    throw new ApiError(error.message, error.code.error);
+    throw new ApiError(error.message, error.code);
   }
   console.log("FETCH SUCCESS");
-  return (await res.json()).data;
+  const json = await res.json();
+  return json.data ?? json;
 };
 
 const get = <G>(url: string) => apiFetch<G>(url);

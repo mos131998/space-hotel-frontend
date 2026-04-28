@@ -5,7 +5,7 @@ import { authService } from "../api/auth/auth.service";
 import { LoginInput, RegisterInput } from "../schemas/auth.schema";
 import { ActionResult } from "./action.type";
 import { formatActionError } from "./action.util";
-import { signIn, signOut } from "../auth/auth";
+import { auth, signIn, signOut } from "../auth/auth";
 
 export const register = async (input: RegisterInput): Promise<ActionResult> => {
   try {
@@ -17,15 +17,23 @@ export const register = async (input: RegisterInput): Promise<ActionResult> => {
 };
 
 export const login = async (input: LoginInput) => {
+  let role: string;
+
   try {
-    console.log("input", input);
-    await signIn("credentials", {
-      email: input.email,
-      password: input.password,
-      redirect: false,
-    });
+    const res = await authService.login(input);
+    role = res.user.role;
   } catch (error) {
-    return { success: false, code: "INVALID_CREDENTIALS" };
+    return { success: false, code: "INVALID_CREDENTIALS" }; // เฉพาะ backend error
+  }
+
+  await signIn("credentials", {
+    email: input.email,
+    password: input.password,
+    redirect: false,
+  });
+
+  if (role === "Admin") {
+    redirect("/admin");
   }
   redirect("/");
 };

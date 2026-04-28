@@ -19,6 +19,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
 
           return { ...user, accessToken };
         } catch (error) {
+          console.log("authorize error", error);
           return null;
         }
       },
@@ -31,6 +32,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
         token.firstName = user.firstName;
         token.lastName = user.lastName;
         token.accessToken = user.accessToken;
+        token.role = user.role;
         token.accessTokenExpiresAt =
           Date.now() + ((user.expiresIn ?? 0) - 3) * 1000;
       }
@@ -42,6 +44,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
       session.user.lastName = token.lastName;
       session.user.avatarUrl = token.avatarUrl;
       session.user.id = token.sub;
+      session.user.role = token.role;
 
       return session;
     },
