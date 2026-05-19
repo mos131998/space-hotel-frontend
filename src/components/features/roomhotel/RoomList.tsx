@@ -1,3 +1,5 @@
+"use client";
+
 import RoomCard from "./RoomCard";
 
 type Room = {
@@ -15,15 +17,7 @@ type Room = {
   description?: string;
 };
 
-async function getRooms() {
-  const res = await fetch(`${process.env.BACKEND_URL}/room`);
-  const data = await res.json();
-  return data.data ?? [];
-}
-
-export default async function RoomList() {
-  const rooms = await getRooms();
-
+export default function RoomList({ rooms }: { rooms: Room[] }) {
   return (
     <div className="grid grid-cols-1 gap-6">
       {rooms.map((room: Room) => (

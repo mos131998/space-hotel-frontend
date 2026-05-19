@@ -5,7 +5,7 @@ import { authService } from "../api/auth/auth.service";
 import { LoginInput, RegisterInput } from "../schemas/auth.schema";
 import { ActionResult } from "./action.type";
 import { formatActionError } from "./action.util";
-import { auth, signIn, signOut } from "../auth/auth";
+import { signIn, signOut } from "../auth/auth";
 
 export const register = async (input: RegisterInput): Promise<ActionResult> => {
   try {
@@ -23,6 +23,7 @@ export const login = async (input: LoginInput) => {
     const res = await authService.login(input);
     role = res.user.role;
   } catch (error) {
+    console.error("Login error:", error);
     return { success: false, code: "INVALID_CREDENTIALS" }; // เฉพาะ backend error
   }
 

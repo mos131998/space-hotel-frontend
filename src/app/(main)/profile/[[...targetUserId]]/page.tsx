@@ -2,6 +2,7 @@ import { Metadata } from "next";
 import { getCurrentUser } from "@/lib/auth/session";
 import { userService } from "@/lib/api/user/user.service";
 import ProfileHeader from "@/components/profile/profile-header";
+import { bookingService } from "@/lib/api/booking/booking.service";
 
 export const metadata: Metadata = {
   title: "Profile",
@@ -18,6 +19,11 @@ export default async function ProfilePage(
     : currentUser.id;
 
   const targetUser = await userService.getUserProfile(targetUserId);
+  const bookings = await bookingService.getMyBooking();
 
-  return <div></div>;
+  return (
+    <div>
+      <ProfileHeader user={targetUser} />
+    </div>
+  );
 }

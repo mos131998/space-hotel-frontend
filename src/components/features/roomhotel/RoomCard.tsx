@@ -1,16 +1,16 @@
 import Image from "next/image";
-import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 type Room = {
   id: number;
   roomName: string;
-  price: number; // ✅ เปลี่ยนเป็น number ดีกว่า
+  price: number;
   image?: string;
   description?: string;
 };
 
 export default function RoomCard({ room }: { room: Room }) {
-  console.log("room", room);
+  const router = useRouter();
   return (
     <div className="bg-[#1a0d14] rounded-xl overflow-hidden border border-pink-900 hover:border-pink-500 transition-all duration-300 group">
       {/* IMAGE */}
@@ -36,13 +36,12 @@ export default function RoomCard({ room }: { room: Room }) {
           </span>
 
           {/* BUTTON */}
-          <Link
-            href={`/booking?roomId=${room.id}`} // ส่ง roomId ไปที่หน้า booking
-            target="_blank"
+          <button
+            onClick={() => router.push(`/rooms/${room.id}`)}
             className="bg-pink-600 px-4 py-2 rounded-lg text-white hover:bg-pink-500 transition"
           >
             Select
-          </Link>
+          </button>
         </div>
       </div>
     </div>

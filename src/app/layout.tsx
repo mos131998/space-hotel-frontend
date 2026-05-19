@@ -21,7 +21,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className={cn("font-sans", figtree.variable)}>
-      <Providers>{children}</Providers>
+      <body>
+        <Providers>{children}</Providers>
+      </body>
     </html>
   );
 }

@@ -17,6 +17,12 @@ export default function AdminSidebar() {
         >
           Bookings
         </Link>
+        <Link
+          href="/admin/rooms"
+          className="text-white hover:text-pink-400 p-2"
+        >
+          Rooms
+        </Link>
       </nav>
     </div>
   );
