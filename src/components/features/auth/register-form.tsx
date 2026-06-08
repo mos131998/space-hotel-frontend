@@ -31,6 +31,7 @@ export default function RegisterForm() {
   const onSubmit = (data: RegisterInput) => {
     startTransition(async () => {
       const res = await register(data);
+      console.log("REGISTER RESULT:", res);
       if (res?.success === false && res.code === "EMAIL_ALREADY_EXIST") {
         setError("email", { message: res.message });
       }
