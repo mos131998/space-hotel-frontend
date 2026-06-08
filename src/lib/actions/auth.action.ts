@@ -13,7 +13,9 @@ export const register = async (input: RegisterInput): Promise<ActionResult> => {
   } catch (error) {
     return formatActionError(error);
   }
-  redirect("/login");
+  return {
+    success: true,
+  };
 };
 
 export const login = async (input: LoginInput) => {
