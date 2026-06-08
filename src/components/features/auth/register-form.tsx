@@ -13,7 +13,7 @@ import { RegisterInput, registerSchema } from "@/lib/schemas/auth.schema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Loader } from "lucide-react";
 import { useRouter } from "next/navigation";
-import { useTransition } from "react";
+import { useState, useTransition } from "react";
 import { Controller, useForm } from "react-hook-form";
 
 export default function RegisterForm() {
@@ -29,8 +29,11 @@ export default function RegisterForm() {
   });
 
   const [isPending, startTransition] = useTransition();
+  const [message, setMessage] = useState<string | null>(null);
 
   const onSubmit = (data: RegisterInput) => {
+    setMessage(null);
+
     startTransition(async () => {
       const res = await register(data);
       console.log("REGISTER RESULT:", res);
@@ -39,9 +42,15 @@ export default function RegisterForm() {
         return;
       }
 
-      if (res?.success === false && res.code === "EMAIL_ALREADY_EXIST") {
-        setError("email", { message: res.message });
+      if (res?.success === false && res.code === "EMAIL_ALREADY_EXISTS") {
+        setError("email", { message: res.message ?? "Email already exists." });
+        return;
       }
+
+      setMessage(
+        res?.message ??
+          "Register failed. Please check the backend service and try again.",
+      );
     });
   };
 
@@ -140,6 +149,7 @@ export default function RegisterForm() {
           />
         </div>
         <Button
+          type="submit"
           className="relative
 w-full
 py-6
@@ -166,6 +176,8 @@ gap-3
             "Enter the ship"
           )}
         </Button>
+
+        {message ? <p className="text-sm text-white">{message}</p> : null}
       </FieldGroup>
     </form>
   );
