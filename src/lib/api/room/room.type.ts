@@ -1,6 +1,6 @@
 export type Room = {
   id: number;
-  roomNumber: string;
+  roomNumber: number;
   roomName: string;
   price: number;
   size: number;
@@ -9,4 +9,12 @@ export type Room = {
   maxtotalhuman: number;
   bathRoom: boolean;
   bathTup: boolean;
+  roomImages?: RoomImage[];
+};
+
+export type RoomImage = {
+  id: number;
+  roomId: number;
+  url: string;
+  order: string;
 };

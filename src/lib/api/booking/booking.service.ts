@@ -1,8 +1,14 @@
 import { api } from "@/lib/api/client";
-import { booking } from "./bookting.type";
+import { Booking, CreateBookingInput } from "./booking.type";
 
-const getMyBooking = () => api.get<booking[]>("/booking/my");
+const getMyBooking = (token: string) =>
+  api.get<Booking[]>("/booking/my", { token });
+const findAll = (token: string) => api.get<Booking[]>("/booking", { token });
+const create = (input: CreateBookingInput, token: string) =>
+  api.post<Booking>("/booking", input, { token });
 
 export const bookingService = {
+  create,
+  findAll,
   getMyBooking,
 };

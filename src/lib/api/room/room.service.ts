@@ -2,9 +2,13 @@ import { api } from "@/lib/api/client";
 import { Room } from "./room.type";
 
 const findAll = () => api.get<Room[]>("/room");
-const create = (data: Omit<Room, "id">) => api.post<Room>("/room", data);
+const create = (data: Omit<Room, "id">, token: string) =>
+  api.post<Room>("/room", data, { token });
 const update = (id: number, data: Partial<Room>) =>
-  api.put<Room>(`/room/${id}`, data);
-const remove = (id: number) => api.delete(`/room/${id}`);
+  api.patch<Room>(`/room/${id}`, data);
+const updateWithToken = (id: number, data: Partial<Room>, token: string) =>
+  api.patch<Room>(`/room/${id}`, data, { token });
+const remove = (id: number, token: string) =>
+  api.delete(`/room/${id}`, { token });
 
-export const roomService = { findAll, create, update, remove };
+export const roomService = { findAll, create, update, updateWithToken, remove };

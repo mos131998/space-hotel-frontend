@@ -1,11 +1,10 @@
-import z, { email } from "zod";
+import z from "zod";
 
 export const registerSchema = z.object({
   firstName: z.string().min(1),
   lastName: z.string().min(1),
-
   email: z.email({
-    message: "กรอกอีเมลด้วยจ๊า",
+    message: "Please enter a valid email.",
   }),
   password: z.string().regex(/^[0-9a-z]{6,}$/),
 });

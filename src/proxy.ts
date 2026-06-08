@@ -1,7 +1,7 @@
 import { auth } from "./lib/auth/auth";
 import { NextResponse } from "next/server";
 
-const protectedRoutes = ["/", "/profile", "/room"];
+const protectedRoutes = ["/", "/profile", "/Booking", "/admin"];
 const publicRoutes = ["/register", "/login"];
 
 export const proxy = auth((req) => {
@@ -15,6 +15,11 @@ export const proxy = auth((req) => {
   if (isProtectedRoute && !isAuthenticated) {
     return NextResponse.redirect(new URL("/login", req.url));
   }
+
+  if (pathname.startsWith("/admin") && req.auth?.user?.role !== "Admin") {
+    return NextResponse.redirect(new URL("/", req.url));
+  }
+
   const isPublicRoute = publicRoutes.some((el) =>
     el === "/" ? pathname === el : pathname.startsWith(el),
   );

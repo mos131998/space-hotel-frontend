@@ -13,7 +13,7 @@ import { logout } from "@/lib/actions/auth.action";
 
 export default async function UserProfileDropdown() {
   const session = await auth();
-  console.log(session);
+
   return (
     <DropdownMenu>
       <DropdownMenuTrigger className="flex items-center">

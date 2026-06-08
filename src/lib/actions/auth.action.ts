@@ -11,7 +11,7 @@ export const register = async (input: RegisterInput): Promise<ActionResult> => {
   try {
     await authService.register(input);
   } catch (error) {
-    formatActionError(error);
+    return formatActionError(error);
   }
   redirect("/login");
 };
@@ -22,9 +22,8 @@ export const login = async (input: LoginInput) => {
   try {
     const res = await authService.login(input);
     role = res.user.role;
-  } catch (error) {
-    console.error("Login error:", error);
-    return { success: false, code: "INVALID_CREDENTIALS" }; // เฉพาะ backend error
+  } catch {
+    return { success: false, code: "INVALID_CREDENTIALS" };
   }
 
   await signIn("credentials", {

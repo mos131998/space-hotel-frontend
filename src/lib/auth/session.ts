@@ -8,16 +8,16 @@ const currentUserSchema = z.object({
   lastName: z.string(),
   email: z.string(),
   accessToken: z.string(),
-  avatarUrl: z.string().nullable(),
+  avatarUrl: z.string().nullable().optional(),
+  role: z.string().optional(),
 });
 
 export const getCurrentUser = async () => {
   const session = await auth();
   if (!session) redirect("/login");
 
-  const { success, data, error } = currentUserSchema.safeParse(session.user);
+  const { success, data } = currentUserSchema.safeParse(session.user);
   if (!success) {
-    console.log("Session user is invalid: \n", z.prettifyError(error));
     redirect("/login");
   }
 

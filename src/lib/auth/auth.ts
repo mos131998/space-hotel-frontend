@@ -11,15 +11,21 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
       },
 
       async authorize(credentials) {
+        const email = credentials.email;
+        const password = credentials.password;
+
+        if (typeof email !== "string" || typeof password !== "string") {
+          return null;
+        }
+
         try {
           const { user, accessToken } = await authService.login({
-            email: credentials.email,
-            password: credentials.password,
+            email,
+            password,
           });
 
           return { ...user, accessToken };
-        } catch (error) {
-          console.log("authorize error", error);
+        } catch {
           return null;
         }
       },
