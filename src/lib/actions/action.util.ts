@@ -3,7 +3,12 @@ import { ApiError } from "../api/api.error";
 
 export const formatActionError = (error: unknown): ErrorActionResult => {
   if (error instanceof ApiError) {
-    return { success: false, ...error };
+    return {
+      success: false,
+      code: error.code,
+      message: error.message,
+      details: error.detail,
+    };
   }
   return {
     success: false,

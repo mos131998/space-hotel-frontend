@@ -9,6 +9,26 @@ type RequestOptions = {
 
 const BACKEND_URL = serverEnv.BACKEND_URL;
 
+const parseJson = (text: string): unknown => {
+  try {
+    return JSON.parse(text);
+  } catch {
+    return text;
+  }
+};
+
+const getRecordValue = (
+  value: unknown,
+  key: string,
+): string | undefined => {
+  if (!value || typeof value !== "object") return undefined;
+
+  const record = value as Record<string, unknown>;
+  const result = record[key];
+
+  return typeof result === "string" ? result : undefined;
+};
+
 const apiFetch = async <G>(
   url: string,
   options: RequestOptions = {},
@@ -28,17 +48,40 @@ const apiFetch = async <G>(
   };
 
   const res = await fetch(`${BACKEND_URL}${url}`, config);
-  if (!res.ok) {
-    const error = await res.json();
-    throw new ApiError(error.message, error.code);
-  }
   const text = await res.text();
+
+  if (!res.ok) {
+    const error = parseJson(text);
+    const message =
+      getRecordValue(error, "message") ||
+      getRecordValue(error, "error") ||
+      res.statusText ||
+      "Request failed";
+    const code =
+      getRecordValue(error, "code") ||
+      getRecordValue(error, "statusCode") ||
+      String(res.status);
+
+    throw new ApiError(
+      message,
+      code,
+      typeof error === "object" && error !== null
+        ? (error as Record<string, unknown>)
+        : { response: error },
+    );
+  }
 
   if (!text) {
     return undefined as G;
   }
-  const json = JSON.parse(text);
-  return json.data ?? json;
+  const json = parseJson(text);
+
+  if (typeof json !== "object" || json === null) {
+    return json as G;
+  }
+
+  const record = json as Record<string, unknown>;
+  return (record.data ?? record) as G;
 };
 
 const get = <G>(url: string, options?: Pick<RequestOptions, "token">) =>

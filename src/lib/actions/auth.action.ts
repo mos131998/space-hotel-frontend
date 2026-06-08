@@ -10,10 +10,12 @@ import { signIn, signOut } from "../auth/auth";
 export const register = async (input: RegisterInput): Promise<ActionResult> => {
   try {
     await authService.register(input);
+    return {
+      success: true,
+    };
   } catch (error) {
     return formatActionError(error);
   }
-  redirect("/login");
 };
 
 export const login = async (input: LoginInput) => {

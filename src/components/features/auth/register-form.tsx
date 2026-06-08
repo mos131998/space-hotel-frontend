@@ -12,10 +12,12 @@ import { register } from "@/lib/actions/auth.action";
 import { RegisterInput, registerSchema } from "@/lib/schemas/auth.schema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Loader } from "lucide-react";
+import { useRouter } from "next/navigation";
 import { useTransition } from "react";
 import { Controller, useForm } from "react-hook-form";
 
 export default function RegisterForm() {
+  const router = useRouter();
   const { handleSubmit, control, setError } = useForm<RegisterInput>({
     defaultValues: {
       firstName: "",
@@ -32,6 +34,11 @@ export default function RegisterForm() {
     startTransition(async () => {
       const res = await register(data);
       console.log("REGISTER RESULT:", res);
+      if (res?.success) {
+        router.push("/login");
+        return;
+      }
+
       if (res?.success === false && res.code === "EMAIL_ALREADY_EXIST") {
         setError("email", { message: res.message });
       }
