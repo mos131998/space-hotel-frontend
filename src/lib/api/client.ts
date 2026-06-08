@@ -32,7 +32,12 @@ const apiFetch = async <G>(
     const error = await res.json();
     throw new ApiError(error.message, error.code);
   }
-  const json = await res.json();
+  const text = await res.text();
+
+  if (!text) {
+    return undefined as G;
+  }
+  const json = JSON.parse(text);
   return json.data ?? json;
 };
 
