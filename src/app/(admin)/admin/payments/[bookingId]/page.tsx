@@ -14,11 +14,20 @@ export default async function AdminPaymentPage({
 
   if (!bookingId) redirect("/admin/bookings");
 
-  const payment = await paymentService
-    .getPaymentInfo(bookingId, user.accessToken)
-    .catch(() => null);
+  // const payment = await paymentService
+  //   .getPaymentInfo(bookingId, user.accessToken)
+  //   .catch(() => null);
 
-  if (!payment) redirect("/admin/bookings");
+  // if (!payment) redirect("/admin/bookings");
+  let payment = null;
+
+  try {
+    payment = await paymentService.getPaymentInfo(bookingId, user.accessToken);
+  } catch (err) {
+    console.error("PAYMENT ERROR >", err);
+
+    return <div className="text-white p-10">PAYMENT LOAD FAILED</div>;
+  }
 
   return (
     <div className="min-h-screen bg-[#2b0015] p-6">
