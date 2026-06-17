@@ -1,4 +1,3 @@
-import { serverEnv } from "@/config/env.validation";
 import { ApiError } from "@/lib/api/api.error";
 
 type RequestOptions = {
@@ -7,7 +6,7 @@ type RequestOptions = {
   token?: string;
 };
 
-const BACKEND_URL = serverEnv.BACKEND_URL;
+const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
 
 const parseJson = (text: string): unknown => {
   try {
@@ -17,10 +16,7 @@ const parseJson = (text: string): unknown => {
   }
 };
 
-const getRecordValue = (
-  value: unknown,
-  key: string,
-): string | undefined => {
+const getRecordValue = (value: unknown, key: string): string | undefined => {
   if (!value || typeof value !== "object") return undefined;
 
   const record = value as Record<string, unknown>;
