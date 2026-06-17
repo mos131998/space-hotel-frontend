@@ -5,6 +5,11 @@ import { roomService } from "@/lib/api/room/room.service";
 import { getCurrentUser } from "@/lib/auth/session";
 
 const uploadToCloudinary = async (file: File): Promise<string> => {
+  const preset = process.env.NEXT_PUBLIC_CLOUDINARY_PRESET;
+  const cloudName = process.env.NEXT_PUBLIC_CLOUDINARY_NAME;
+
+  console.log("PRESET >", preset);
+  console.log("CLOUD >", cloudName);
   const form = new FormData();
 
   form.append("file", file);

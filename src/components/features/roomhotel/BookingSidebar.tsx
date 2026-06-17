@@ -6,9 +6,11 @@ import { useState, useTransition } from "react";
 
 export default function BookingSidebar({ roomId }: { roomId: number | null }) {
   const router = useRouter();
+
   const [checkIn, setCheckIn] = useState("");
   const [checkOut, setCheckOut] = useState("");
   const [totalhuman, setTotalhuman] = useState(1);
+
   const [message, setMessage] = useState<string | null>(null);
   const [isPending, startTransition] = useTransition();
 
@@ -20,22 +22,43 @@ export default function BookingSidebar({ roomId }: { roomId: number | null }) {
       return;
     }
 
+    if (!checkIn || !checkOut) {
+      setMessage("Please select check-in and check-out.");
+      return;
+    }
+
     startTransition(async () => {
-      const result = await createBooking({
-        roomId,
-        checkIn,
-        checkOut,
-        totalhuman: Number(totalhuman),
-      });
+      try {
+        const result = await createBooking({
+          roomId,
+          checkIn,
+          checkOut,
+          totalhuman,
+        });
 
-      if (result.success) {
-        const bookingId = (result.data as { id: number })?.id;
-        router.push(`/payment/${bookingId}`);
-        router.refresh();
-        return;
+        console.log("BOOK RESULT >", result);
+
+        if (!result.success) {
+          setMessage(result.message ?? "Booking failed");
+          return;
+        }
+
+        const booking = result.data as {
+          id?: number;
+        };
+
+        console.log("BOOKING >", booking);
+
+        if (!booking?.id) {
+          setMessage("Booking created but booking id missing");
+          return;
+        }
+
+        router.push(`/payment/${booking.id}`);
+      } catch (error) {
+        console.error("BOOK ERROR >", error);
+        setMessage("Something went wrong.");
       }
-
-      setMessage(result.message ?? "Booking failed. Please try again.");
     });
   }
 
@@ -46,47 +69,83 @@ export default function BookingSidebar({ roomId }: { roomId: number | null }) {
       <div className="space-y-4">
         <div>
           <label className="text-gray-500 text-sm">Check-in</label>
+
           <input
             type="date"
             value={checkIn}
             onChange={(e) => setCheckIn(e.target.value)}
-            className="w-full mt-2 text-white border border-pink-500 rounded-lg p-2"
+            className="
+            w-full
+            mt-2
+            text-white
+            border
+            border-pink-500
+            rounded-lg
+            p-2
+            "
           />
         </div>
 
         <div>
           <label className="text-gray-500 text-sm">Check-out</label>
+
           <input
             type="date"
             value={checkOut}
             onChange={(e) => setCheckOut(e.target.value)}
-            className="w-full mt-2 text-white border border-pink-500 rounded-lg p-2"
+            className="
+            w-full
+            mt-2
+            text-white
+            border
+            border-pink-500
+            rounded-lg
+            p-2
+            "
           />
         </div>
 
         <div>
           <label className="text-gray-500 text-sm">Guests</label>
+
           <input
             type="number"
             min={1}
             value={totalhuman}
             onChange={(e) => setTotalhuman(Number(e.target.value))}
-            className="w-full mt-2 text-white border border-pink-500 rounded-lg p-2"
+            className="
+            w-full
+            mt-2
+            text-white
+            border
+            border-pink-500
+            rounded-lg
+            p-2
+            "
           />
         </div>
 
         <div>
           <p className="text-gray-400 text-sm">check-in: {checkIn || "-"}</p>
+
           <p className="text-gray-400 text-sm">check-out: {checkOut || "-"}</p>
         </div>
 
-        {message ? <p className="text-sm text-pink-300">{message}</p> : null}
+        {message && <p className="text-sm text-red-400">{message}</p>}
       </div>
 
       <button
         onClick={handleConfirm}
         disabled={isPending}
-        className="mt-4 w-full bg-pink-600 py-2 rounded text-white transition disabled:cursor-not-allowed disabled:opacity-60"
+        className="
+        mt-4
+        w-full
+        bg-pink-600
+        py-2
+        rounded
+        text-white
+        disabled:opacity-50
+        "
       >
         {isPending ? "Booking..." : "Confirm"}
       </button>
