@@ -212,26 +212,27 @@ export default async function AdminRoomsPage() {
                         accept="image/*"
                         required
                         className="
- rounded-md
- bg-white
- p-2
- text-black
- flex-1
- "
+      rounded-md
+      bg-white
+      p-2
+      text-black
+      flex-1
+    "
                       />
-                    </form>
 
-                    <button
-                      className="
-        rounded-md
-        bg-pink-600
-        px-3
-        py-1
-        text-white
-        "
-                    >
-                      Add
-                    </button>
+                      <button
+                        type="submit"
+                        className="
+      rounded-md
+      bg-pink-600
+      px-3
+      py-1
+      text-white
+    "
+                      >
+                        Add
+                      </button>
+                    </form>
                   </div>
                 </td>
                 <td className="p-3">{room.roomNumber}</td>
