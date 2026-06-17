@@ -8,7 +8,7 @@ const uploadToCloudinary = async (file: File): Promise<string> => {
   const form = new FormData();
 
   form.append("file", file);
-  form.append("upload_preset", process.env.NEXT_public_cloudinary_preset!);
+  form.append("upload_preset", process.env.NEXT_PUBLIC_CLOUDINARY_PRESET!);
 
   const res = await fetch(
     `https://api.cloudinary.com/v1_1/${process.env.NEXT_PUBLIC_CLOUDINARY_NAME}/image/upload`,
