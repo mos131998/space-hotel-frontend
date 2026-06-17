@@ -20,20 +20,18 @@ export const register = async (input: RegisterInput): Promise<ActionResult> => {
 
 export const login = async (input: LoginInput) => {
   let role: string;
-
   try {
     const res = await authService.login(input);
     role = res.user.role;
+
+    await signIn("credentials", {
+      email: input.email,
+      password: input.password,
+      redirect: false,
+    });
   } catch {
     return { success: false, code: "INVALID_CREDENTIALS" };
   }
-
-  await signIn("credentials", {
-    email: input.email,
-    password: input.password,
-    redirect: false,
-  });
-
   if (role === "Admin") {
     redirect("/admin");
   }

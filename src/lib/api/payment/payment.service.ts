@@ -1,6 +1,9 @@
 import { api } from "../client";
 import { paymentEndpoint } from "./payment.endpoint";
-import { PaymentResult, PaymentStatus } from "./payment.type";
+import { PaymentInfo, PaymentResult, PaymentStatus } from "./payment.type";
+
+const getPaymentInfo = (bookingId: number, token: string) =>
+  api.get<PaymentInfo>(`/payment/${bookingId}`, { token });
 
 const uploadSlip = (bookingId: number, slip: File, token: string) => {
   const formData = new FormData();
@@ -25,6 +28,7 @@ const updateStatus = (
   );
 
 export const paymentService = {
+  getPaymentInfo,
   uploadSlip,
   updateStatus,
 };

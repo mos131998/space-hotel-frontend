@@ -28,8 +28,8 @@ export const createBooking = async (
   }
 
   try {
-    await bookingService.create(input, user.accessToken);
-    return { success: true };
+    const booking = await bookingService.create(input, user.accessToken);
+    return { success: true, data: booking };
   } catch (error) {
     return formatActionError(error);
   }

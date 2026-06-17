@@ -1,5 +1,12 @@
 import { roomService } from "@/lib/api/room/room.service";
-import { createRoom, deleteRoom, updateRoom } from "@/lib/actions/room.action";
+import {
+  addRoomImage,
+  createRoom,
+  deleteRoom,
+  deleteRoomImage,
+  updateRoom,
+} from "@/lib/actions/room.action";
+import Image from "next/image";
 
 export default async function AdminRoomsPage() {
   const rooms = await roomService.findAll();
@@ -92,76 +99,140 @@ export default async function AdminRoomsPage() {
             {rooms.map((room) => (
               <tr key={room.id} className="border-t border-pink-900/70">
                 <td className="p-3">
-                  <form
-                    id={`room-${room.id}`}
-                    action={updateRoom.bind(null, room.id)}
-                    className="grid min-w-[560px] grid-cols-7 gap-2"
-                  >
-                    <input
-                      name="roomName"
-                      defaultValue={room.roomName}
-                      className="rounded-md bg-white px-2 py-1 text-black"
-                      required
-                    />
-                    <input
-                      name="roomNumber"
-                      defaultValue={room.roomNumber}
-                      type="number"
-                      className="rounded-md bg-white px-2 py-1 text-black"
-                      required
-                    />
-                    <input
-                      name="price"
-                      defaultValue={room.price}
-                      type="number"
-                      className="rounded-md bg-white px-2 py-1 text-black"
-                      required
-                    />
-                    <input
-                      name="size"
-                      defaultValue={room.size}
-                      type="number"
-                      className="rounded-md bg-white px-2 py-1 text-black"
-                      required
-                    />
-                    <input
-                      name="maxAdult"
-                      defaultValue={room.maxAdult}
-                      type="number"
-                      className="rounded-md bg-white px-2 py-1 text-black"
-                      required
-                    />
-                    <input
-                      name="maxChildren"
-                      defaultValue={room.maxChildren}
-                      type="number"
-                      className="rounded-md bg-white px-2 py-1 text-black"
-                      required
-                    />
-                    <input
-                      name="maxtotalhuman"
-                      defaultValue={room.maxtotalhuman}
-                      type="number"
-                      className="rounded-md bg-white px-2 py-1 text-black"
-                      required
-                    />
-                    <label className="flex items-center gap-2">
+                  <div className="space-y-3">
+                    {/* update room */}
+                    <form
+                      id={`room-${room.id}`}
+                      action={updateRoom.bind(null, room.id)}
+                      className="grid min-w-560px grid-cols-7 gap-2"
+                    >
                       <input
-                        name="bathRoom"
-                        type="checkbox"
-                        defaultChecked={room.bathRoom}
+                        name="roomName"
+                        defaultValue={room.roomName}
+                        className="rounded-md bg-white px-2 py-1 text-black"
+                        required
                       />
-                      Bathroom
-                    </label>
-                    <label className="flex items-center gap-2">
+
                       <input
-                        name="bathTup"
-                        type="checkbox"
-                        defaultChecked={room.bathTup}
+                        name="roomNumber"
+                        defaultValue={room.roomNumber}
+                        type="number"
+                        className="rounded-md bg-white px-2 py-1 text-black"
+                        required
                       />
-                      Bathtub
-                    </label>
-                  </form>
+
+                      <input
+                        name="price"
+                        defaultValue={room.price}
+                        type="number"
+                        className="rounded-md bg-white px-2 py-1 text-black"
+                        required
+                      />
+
+                      <input
+                        name="size"
+                        defaultValue={room.size}
+                        type="number"
+                        className="rounded-md bg-white px-2 py-1 text-black"
+                        required
+                      />
+
+                      <input
+                        name="maxAdult"
+                        defaultValue={room.maxAdult}
+                        type="number"
+                        className="rounded-md bg-white px-2 py-1 text-black"
+                        required
+                      />
+
+                      <input
+                        name="maxChildren"
+                        defaultValue={room.maxChildren}
+                        type="number"
+                        className="rounded-md bg-white px-2 py-1 text-black"
+                        required
+                      />
+
+                      <input
+                        name="maxtotalhuman"
+                        defaultValue={room.maxtotalhuman}
+                        type="number"
+                        className="rounded-md bg-white px-2 py-1 text-black"
+                        required
+                      />
+                    </form>
+
+                    {/* room images */}
+                    <div className="flex flex-wrap gap-2">
+                      {room.roomImages?.map((img) => (
+                        <div key={img.id} className="relative">
+                          <Image
+                            src={img.url}
+                            alt=""
+                            width={64}
+                            height={64}
+                            className="h-16 w-16 rounded object-cover"
+                          />
+
+                          <form
+                            action={deleteRoomImage.bind(null, room.id, img.id)}
+                          >
+                            <button
+                              className="
+              absolute
+              -right-1
+              -top-1
+              flex
+              h-5
+              w-5
+              items-center
+              justify-center
+              rounded-full
+              bg-red-600
+              text-xs
+              text-white
+              "
+                            >
+                              ×
+                            </button>
+                          </form>
+                        </div>
+                      ))}
+                    </div>
+
+                    {/* add image */}
+
+                    <form
+                      action={addRoomImage.bind(null, room.id)}
+                      className="flex gap-2"
+                    >
+                      <input
+                        type="file"
+                        name="image"
+                        accept="image/*"
+                        required
+                        className="
+ rounded-md
+ bg-white
+ p-2
+ text-black
+ flex-1
+ "
+                      />
+                    </form>
+
+                    <button
+                      className="
+        rounded-md
+        bg-pink-600
+        px-3
+        py-1
+        text-white
+        "
+                    >
+                      Add
+                    </button>
+                  </div>
                 </td>
                 <td className="p-3">{room.roomNumber}</td>
                 <td className="p-3">{room.maxtotalhuman}</td>

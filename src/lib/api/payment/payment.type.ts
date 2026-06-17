@@ -15,3 +15,13 @@ export type UpdatePaymentStatusInput = {
 export type PaymentResult = {
   booking: Booking;
 };
+
+export type PaymentInfo = {
+  bookingId: number;
+  amount: string;
+  discount: string;
+  status: PaymentStatus;
+  slipUrl: string;
+  currency: string;
+  reviewExpiresHours: number;
+};

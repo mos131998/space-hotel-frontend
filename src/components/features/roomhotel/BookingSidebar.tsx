@@ -29,7 +29,8 @@ export default function BookingSidebar({ roomId }: { roomId: number | null }) {
       });
 
       if (result.success) {
-        router.push("/profile");
+        const bookingId = (result.data as { id: number })?.id;
+        router.push(`/payment/${bookingId}`);
         router.refresh();
         return;
       }

@@ -1,3 +1,5 @@
+"use server";
+
 import { revalidatePath } from "next/cache";
 import { paymentService } from "../api/payment/payment.service";
 import { getCurrentUser } from "../auth/session";

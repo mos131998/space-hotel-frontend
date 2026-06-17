@@ -1,9 +1,16 @@
 import { bookingService } from "@/lib/api/booking/booking.service";
 import { getCurrentUser } from "@/lib/auth/session";
+import Link from "next/link";
 
 export default async function AdminBookingsPage() {
   const user = await getCurrentUser();
   const bookings = await bookingService.findAll(user.accessToken);
+
+  const statusColor: Record<string, string> = {
+    PENDING: "text-yellow-400",
+    APPROVED: "text-green-400",
+    FAILED: "text-red-400",
+  };
 
   return (
     <div className="text-white">
@@ -23,6 +30,7 @@ export default async function AdminBookingsPage() {
               <th className="p-3">Dates</th>
               <th className="p-3">Total</th>
               <th className="p-3">Status</th>
+              <th className="p-3">Actions</th>
             </tr>
           </thead>
           <tbody>
@@ -41,7 +49,19 @@ export default async function AdminBookingsPage() {
                 <td className="p-3">
                   {Number(booking.total).toLocaleString()} THB
                 </td>
-                <td className="p-3">{booking.paymentStatus}</td>
+                <td
+                  className={`p-3 ${statusColor[booking.paymentStatus] ?? "text-gray-400"}`}
+                >
+                  {booking.paymentStatus}
+                </td>
+                <td className="p-3">
+                  <Link
+                    href={`/admin/payments/${booking.id}`}
+                    className="px-3 py-1 text-xs bg-pink-700 hover:bg-pink-600 text-white rounded-lg transition"
+                  >
+                    Review
+                  </Link>
+                </td>
               </tr>
             ))}
           </tbody>
