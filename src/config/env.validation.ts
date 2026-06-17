@@ -1,7 +1,7 @@
 import z from "zod";
 
 const serverEnvSchema = z.object({
-  BACKEND_URL: z.url(),
+  BACKEND_URL: z.string().url(),
   AUTH_SECRET: z.string().min(32),
 });
 
@@ -20,7 +20,7 @@ if (!resultServer.success) {
 const resultClient = clientEnvSchema.safeParse(process.env);
 if (!resultClient.success) {
   console.error(
-    "Invalid client variables:/n",
+    "Invalid client variables:\n",
     z.prettifyError(resultClient.error),
   );
   process.exit(1);
