@@ -4,12 +4,14 @@ import { uploadPaymentSlip } from "@/lib/actions/payment.action";
 import { PaymentInfo } from "@/lib/api/payment/payment.type";
 import { useRef, useState, useTransition } from "react";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 
 export default function PaymentSlipUpload({
   payment,
 }: {
   payment: PaymentInfo;
 }) {
+  const router = useRouter();
   const [preview, setPreview] = useState<string | null>(
     payment.slipUrl || null,
   );
@@ -38,6 +40,7 @@ export default function PaymentSlipUpload({
       const result = await uploadPaymentSlip(payment.bookingId, formData);
       if (result.success) {
         setMessage("Slip uploaded successfully!");
+        router.push("/");
       } else {
         setMessage(result.message ?? "Upload failed. Please try again.");
       }
