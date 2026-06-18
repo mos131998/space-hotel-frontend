@@ -19,7 +19,7 @@ const updateStatus = (
 ) =>
   api.patch<PaymentResult>(
     paymentEndpoint.updateStatus(bookingId),
-    { status },
+    { approved: status === "APPROVED" },
     { token },
   );
 
