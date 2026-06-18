@@ -5,16 +5,12 @@ import { PaymentInfo, PaymentResult, PaymentStatus } from "./payment.type";
 const getPaymentInfo = (bookingId: number, token: string) =>
   api.get<PaymentInfo>(`/payment/${bookingId}`, { token });
 
-const uploadSlip = (bookingId: number, slip: File, token: string) => {
-  const formData = new FormData();
-  formData.append("slip", slip);
-
-  return api.post<PaymentResult>(
+const uploadSlip = (bookingId: number, slipUrl: string, token: string) =>
+  api.post<PaymentResult>(
     paymentEndpoint.uploadSlip(bookingId),
-    formData,
+    { slipUrl },
     { token },
   );
-};
 
 const updateStatus = (
   bookingId: number,

@@ -5,7 +5,6 @@ import { paymentService } from "../api/payment/payment.service";
 import { getCurrentUser } from "../auth/session";
 import { ActionResult } from "@/lib/actions/action.type";
 import { formatActionError } from "./action.util";
-
 import { PaymentStatus } from "../api/payment/payment.type";
 
 export const uploadPaymentSlip = async (
@@ -24,9 +23,31 @@ export const uploadPaymentSlip = async (
   }
 
   try {
+    // 1. Upload ขึ้น Cloudinary ก่อน
+    const cloudForm = new FormData();
+    cloudForm.append("file", slip);
+    cloudForm.append("upload_preset", "ml_default"); // เปลี่ยนตาม preset ของคุณ
+
+    const cloudRes = await fetch(
+      `https://api.cloudinary.com/v1_1/ded4xrwkm/image/upload`,
+      { method: "POST", body: cloudForm },
+    );
+
+    if (!cloudRes.ok) {
+      return {
+        success: false,
+        code: "CLOUDINARY_ERROR",
+        message: "Failed to upload image.",
+      };
+    }
+
+    const cloudData = await cloudRes.json();
+    const slipUrl: string = cloudData.secure_url;
+
+    // 2. ส่ง URL ไป Backend
     const result = await paymentService.uploadSlip(
       bookingId,
-      slip,
+      slipUrl,
       user.accessToken,
     );
     revalidatePath("/profile");
