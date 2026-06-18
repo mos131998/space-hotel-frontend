@@ -1,6 +1,6 @@
 import { Booking } from "../booking/booking.type";
 
-export type PaymentStatus = "PENDING" | "APPROVED" | "FAILED";
+export type PaymentStatus = "PENDING" | "APPROVED" | "FAILED" | "UNDER_REVIEW";
 
 export type UploadPaymentSlipInput = {
   bookingId: string;

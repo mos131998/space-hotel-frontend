@@ -99,26 +99,27 @@ export default function AdminPaymentReview({
       </div>
 
       {/* Actions */}
-      {currentStatus === "PENDING" && payment.slipUrl && (
-        <div className="flex gap-3">
-          <button
-            onClick={() => handleReview("APPROVED")}
-            disabled={isPending}
-            className="flex-1 bg-green-700 hover:bg-green-600 text-white py-2 rounded-lg transition disabled:opacity-60 disabled:cursor-not-allowed text-sm"
-          >
-            {isPending ? "Processing..." : "Approve"}
-          </button>
-          <button
-            onClick={() => handleReview("FAILED")}
-            disabled={isPending}
-            className="flex-1 bg-red-800 hover:bg-red-700 text-white py-2 rounded-lg transition disabled:opacity-60 disabled:cursor-not-allowed text-sm"
-          >
-            {isPending ? "Processing..." : "Reject"}
-          </button>
-        </div>
-      )}
+      {(currentStatus === "PENDING" || currentStatus === "UNDER_REVIEW") &&
+        payment.slipUrl && (
+          <div className="flex gap-3">
+            <button
+              onClick={() => handleReview("APPROVED")}
+              disabled={isPending}
+              className="flex-1 bg-green-700 hover:bg-green-600 text-white py-2 rounded-lg transition disabled:opacity-60 disabled:cursor-not-allowed text-sm"
+            >
+              {isPending ? "Processing..." : "Approve"}
+            </button>
+            <button
+              onClick={() => handleReview("FAILED")}
+              disabled={isPending}
+              className="flex-1 bg-red-800 hover:bg-red-700 text-white py-2 rounded-lg transition disabled:opacity-60 disabled:cursor-not-allowed text-sm"
+            >
+              {isPending ? "Processing..." : "Reject"}
+            </button>
+          </div>
+        )}
 
-      {currentStatus !== "PENDING" && (
+      {(currentStatus === "APPROVED" || currentStatus === "FAILED") && (
         <div
           className={`border rounded-xl p-4 text-center text-sm ${
             currentStatus === "APPROVED"
