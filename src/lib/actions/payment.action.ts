@@ -26,7 +26,7 @@ export const uploadPaymentSlip = async (
     // 1. Upload ขึ้น Cloudinary ก่อน
     const cloudForm = new FormData();
     cloudForm.append("file", slip);
-    cloudForm.append("upload_preset", "ml_default"); // เปลี่ยนตาม preset ของคุณ
+    cloudForm.append("upload_preset", "space_hotel"); // เปลี่ยนตาม preset ของคุณ
 
     const cloudRes = await fetch(
       `https://api.cloudinary.com/v1_1/ded4xrwkm/image/upload`,
