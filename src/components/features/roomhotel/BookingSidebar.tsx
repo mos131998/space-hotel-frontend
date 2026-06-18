@@ -75,7 +75,7 @@ export default function BookingSidebar({ roomId }: { roomId: number | null }) {
             value={checkIn}
             onChange={(e) => setCheckIn(e.target.value)}
             style={{ colorScheme: "dark" }}
-            className="w-full mt-2 border border-pink-500 rounded-lg p-2"
+            className="w-full mt-2 border border-pink-500 rounded-lg p-2 text-white"
           />
         </div>
 
@@ -87,7 +87,7 @@ export default function BookingSidebar({ roomId }: { roomId: number | null }) {
             value={checkOut}
             onChange={(e) => setCheckOut(e.target.value)}
             style={{ colorScheme: "dark" }}
-            className="w-full mt-2 border border-pink-500 rounded-lg p-2"
+            className="w-full mt-2 border border-pink-500 rounded-lg p-2 text-white"
           />
         </div>
 
