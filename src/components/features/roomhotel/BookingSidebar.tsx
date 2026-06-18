@@ -82,6 +82,7 @@ export default function BookingSidebar({ roomId }: { roomId: number | null }) {
             border-pink-500
             rounded-lg
             p-2
+            bg-fuchsia-400
             "
           />
         </div>
@@ -101,6 +102,7 @@ export default function BookingSidebar({ roomId }: { roomId: number | null }) {
             border-pink-500
             rounded-lg
             p-2
+            bg-fuchsia-400
             "
           />
         </div>
