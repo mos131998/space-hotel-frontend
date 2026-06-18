@@ -22,9 +22,12 @@ const updateStatus = (
     { approved: status === "APPROVED" },
     { token },
   );
+const getPaymentInfoAdmin = (bookingId: number, token: string) =>
+  api.get<PaymentInfo>(`/payment/admin/${bookingId}`, { token });
 
 export const paymentService = {
   getPaymentInfo,
   uploadSlip,
   updateStatus,
+  getPaymentInfoAdmin,
 };

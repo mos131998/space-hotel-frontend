@@ -10,6 +10,7 @@ export default async function AdminBookingsPage() {
     PENDING: "text-yellow-400",
     APPROVED: "text-green-400",
     FAILED: "text-red-400",
+    UNDER_REVIEW: "text-blue-400",
   };
 
   return (
